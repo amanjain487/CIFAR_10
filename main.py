@@ -34,7 +34,6 @@ def train(epoch, net, criterion, optimizer, device, trainloader):
 
 
 def test(epoch, net, criterion, device, testloader, best_acc):
-    global best_acc
     net.eval()
     test_loss = 0
     correct = 0
@@ -72,8 +71,9 @@ def dataloaders(trainset, testset):
 def start_training(no_of_epoch, net, criterion, optimizer, device, trainloader, testloader, best_acc):
     for epoch in range(no_of_epoch):
         train(epoch+1, net, criterion, optimizer, device, trainloader)
-        test(epoch+1, net, criterion, device, testloader, best_acc)
+        best_acc = test(epoch+1, net, criterion, device, testloader, best_acc)
         scheduler.step()
+    print("Best Acc is : ", best_acc)
 
         
 def define_model_utilities(loss="cross_entropy", optimizer_func="SGD", lr=0.1):
