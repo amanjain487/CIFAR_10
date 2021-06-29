@@ -58,11 +58,7 @@ def test(epoch):
 
 
 
-
-def check_cuda():
-    device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    return device
-    
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
 best_acc = 0  # best test accuracy
 start_epoch = 0  # start from epoch 0 or last checkpoint epoch
 classes = ('plane', 'car', 'bird', 'cat', 'deer',
