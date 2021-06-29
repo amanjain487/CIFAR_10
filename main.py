@@ -72,7 +72,8 @@ def dataloaders(trainset, testset):
 
     testloader = torch.utils.data.DataLoader(
     testset, batch_size=100, shuffle=False, num_workers=2)
-
+    
+    return trainloader, testloader
 
 
 # Model
