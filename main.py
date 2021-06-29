@@ -7,7 +7,6 @@ import torch.backends.cudnn as cudnn
 import torchvision
 import torchvision.transforms as transforms
 from Tsai_EVA6_Main.models.resnet import *
-import Tsai_EVA6_Main.utils
 import os
 import argparse
 
@@ -69,21 +68,12 @@ start_epoch = 0  # start from epoch 0 or last checkpoint epoch
 classes = ('plane', 'car', 'bird', 'cat', 'deer',
            'dog', 'frog', 'horse', 'ship', 'truck')
 
-def define_transforms(train, test):
-# Data
-    print('==> Preparing data..')
-    transform_train = utils.train_transform(train)
-    transform_test = utils.test_transform(test)
-    return transform_train, transform_test
 
-def download_dataset(transform_train, transform_test):
-    trainset = torchvision.datasets.CIFAR10(
-    root='./data', train=True, download=True, transform=transform_train)
+
+def dataloaders(trainset, testset):
     trainloader = torch.utils.data.DataLoader(
     trainset, batch_size=128, shuffle=True, num_workers=2)
 
-    testset = torchvision.datasets.CIFAR10(
-    root='./data', train=False, download=True, transform=transform_test)
     testloader = torch.utils.data.DataLoader(
     testset, batch_size=100, shuffle=False, num_workers=2)
 
@@ -96,7 +86,6 @@ net = ResNet18()
 net = net.to(device)
 if device == 'cuda':
     net = torch.nn.DataParallel(net)
-    cudnn.benchmark = True
 
 
 criterion = nn.CrossEntropyLoss()
