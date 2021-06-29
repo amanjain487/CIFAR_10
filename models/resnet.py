@@ -20,7 +20,7 @@ class BasicBlock(nn.Module):
             self.shortcut = nn.Sequential(
                 nn.Conv2d(in_planes, self.expansion*planes,
                           kernel_size=1, stride=stride, bias=False),
-                nn.nn.GroupNorm(1, self.expansion*planes)
+                nn.GroupNorm(1, self.expansion*planes)
             )
 
     def forward(self, x):
