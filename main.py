@@ -53,7 +53,7 @@ if device == 'cuda':
 
 
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.SGD(net.parameters(), lr=args.lr,
+optimizer = optim.SGD(net.parameters(), lr=0.01,
                       momentum=0.9, weight_decay=5e-4)
 scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=200)
 
