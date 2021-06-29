@@ -106,6 +106,6 @@ def define_model_utilities(loss="cross_entropy", optimizer_func="SGD", lr=0.1):
         optimizer = optim.SGD(net.parameters(), lr=lr,
                       momentum=0.9, weight_decay=5e-4)
         
-    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=200)
+    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, patience=3)
     
     return device, best_acc, classes, net, criterion, optimizer, scheduler
