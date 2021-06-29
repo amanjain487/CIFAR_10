@@ -12,7 +12,7 @@ import argparse
 
 
 # Training
-def train(epoch, net, criterion, optimizer, device, trainloader, train_loss, train_acc):
+def train(epoch, net, criterion, optimizer, device, trainloader, train_losses, train_acc):
     print('\nEpoch: %d' % epoch)
     net.train()
     train_loss = 0
@@ -31,12 +31,12 @@ def train(epoch, net, criterion, optimizer, device, trainloader, train_loss, tra
         total += targets.size(0)
         correct += predicted.eq(targets).sum().item()
     print('Train Loss: %.3f | Train Acc: %.3f%% (%d/%d)' % (train_loss/(batch_idx+1), 100.*correct/total, correct, total))
-    train_loss.append(train_loss/(batch_idx+1))
+    train_losses.append(train_loss/(batch_idx+1))
     train_acc.append(100.*correct/total)
-    return train_loss, train_acc
+    return train_losses, train_acc
 
 
-def test(epoch, net, criterion, device, testloader, best_acc, test_loss, test_acc):
+def test(epoch, net, criterion, device, testloader, best_acc, test_losses, test_acc):
     net.eval()
     test_loss = 0
     correct = 0
@@ -53,14 +53,14 @@ def test(epoch, net, criterion, device, testloader, best_acc, test_loss, test_ac
             correct += predicted.eq(targets).sum().item()
     print('Loss: %.3f | Acc: %.3f%% (%d/%d)' % (test_loss/(batch_idx+1), 100.*correct/total, correct, total))
     
-    test_loss.append(test_loss/(batch_idx+1))
+    test_losses.append(test_loss/(batch_idx+1))
     test_acc.append(100.*correct/total)
     
     # Save checkpoint.
     acc = 100.*correct/total
     if acc > best_acc:
         best_acc = acc
-    return best_acc, test_loss, test_acc
+    return best_acc, test_losses, test_acc
     
 
 
