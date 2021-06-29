@@ -7,7 +7,6 @@ import torch.backends.cudnn as cudnn
 import torchvision
 import torchvision.transforms as transforms
 
-!pip install git+https://github.com/albumentations-team/albumentations.git
 import albumentations as A
 
 
