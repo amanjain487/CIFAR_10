@@ -43,6 +43,8 @@ def train_transform(train):
     train_list.append(transforms.RandomCrop(32, padding=4))
   if "horizontal_flip" in train:
     train_list.append(transforms.RandomHorizontalFlip())
+  if "random_rotate" in train:
+    train_list.append(transforms.RandomRotation((-5.0, 5.0), fill=(0,0,0)))
   if "cutout" in train:
     albumentation_train_list.append(A.CoarseDropout(p=0.5, max_holes = 1, max_height=16, max_width=16, min_holes = 1, min_height=16, min_width=16, fill_value=(0.4914, 0.4822, 0.4465), mask_fill_value = None))
   if "shift_scale_rotate" in train:
