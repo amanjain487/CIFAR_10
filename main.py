@@ -6,7 +6,7 @@ import torch.backends.cudnn as cudnn
 
 import torchvision
 import torchvision.transforms as transforms
-from models import resnet_18
+from models import resnet
 import os
 import argparse
 
