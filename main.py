@@ -83,7 +83,7 @@ def start_training(no_of_epoch, net, criterion, optimizer, device, trainloader, 
     for epoch in range(no_of_epoch):
         train_loss, train_acc = train(epoch+1, net, criterion, optimizer, device, trainloader, train_loss, train_acc, scheduler)
         best_acc, test_loss, test_acc = test(epoch+1, net, criterion, device, testloader, best_acc, test_loss, test_acc, scheduler)
-        scheduler.step()
+        scheduler.step(test_loss[-1])
     print("Best Acc is : ", best_acc)
     return train_loss, train_acc, test_loss, test_acc
 
