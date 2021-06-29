@@ -51,7 +51,7 @@ def test(epoch, net, criterion, device, testloader, best_acc, test_losses, test_
             _, predicted = outputs.max(1)
             total += targets.size(0)
             correct += predicted.eq(targets).sum().item()
-    print('Loss: %.3f | Acc: %.3f%% (%d/%d)' % (test_loss/(batch_idx+1), 100.*correct/total, correct, total))
+    print('Test Loss: %.3f | Test Acc: %.3f%% (%d/%d)' % (test_loss/(batch_idx+1), 100.*correct/total, correct, total))
     
     test_losses.append(test_loss/(batch_idx+1))
     test_acc.append(100.*correct/total)
