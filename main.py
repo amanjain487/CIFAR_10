@@ -69,10 +69,10 @@ def dataloaders(trainset, testset):
     return trainloader, testloader
 
 
-def start_training(no_of_epoch):
+def start_training(no_of_epoch, net, criterion, optimizer, device, trainloader, testloader, best_acc):
     for epoch in range(no_of_epoch):
-        train(epoch+1)
-        test(epoch+1)
+        train(epoch+1, net, criterion, optimizer, device, trainloader)
+        test(epoch+1, net, criterion, device, testloader, best_acc)
         scheduler.step()
 
         
