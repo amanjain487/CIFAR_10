@@ -10,8 +10,6 @@ import torchvision.transforms as transforms
 import os
 import argparse
 
-from models import *
-
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 best_acc = 0  # best test accuracy
