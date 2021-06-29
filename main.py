@@ -12,7 +12,7 @@ import argparse
 
 
 # Training
-def train(epoch):
+def train(epoch, net, criterion, optimizer, device, trainloader):
     print('\nEpoch: %d' % epoch)
     net.train()
     train_loss = 0
@@ -33,7 +33,7 @@ def train(epoch):
     print('Loss: %.3f | Acc: %.3f%% (%d/%d)' % (train_loss/(batch_idx+1), 100.*correct/total, correct, total))
 
 
-def test(epoch):
+def test(epoch, net, criterion, device, testloader, best_acc):
     global best_acc
     net.eval()
     test_loss = 0
@@ -55,15 +55,8 @@ def test(epoch):
     acc = 100.*correct/total
     if acc > best_acc:
         best_acc = acc
-
-
-
-device = 'cuda' if torch.cuda.is_available() else 'cpu'
-best_acc = 0  # best test accuracy
-start_epoch = 0  # start from epoch 0 or last checkpoint epoch
-classes = ('plane', 'car', 'bird', 'cat', 'deer',
-           'dog', 'frog', 'horse', 'ship', 'truck')
-
+    return best_acc
+    
 
 
 def dataloaders(trainset, testset):
@@ -76,23 +69,31 @@ def dataloaders(trainset, testset):
     return trainloader, testloader
 
 
-# Model
-print('==> Building model..')
-
-net = ResNet18()
-net = net.to(device)
-if device == 'cuda':
-    net = torch.nn.DataParallel(net)
-
-
-criterion = nn.CrossEntropyLoss()
-optimizer = optim.SGD(net.parameters(), lr=0.01,
-                      momentum=0.9, weight_decay=5e-4)
-scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=200)
-
-
-def start_training():
-    for epoch in range(start_epoch, start_epoch+40):
-        train(epoch)
-        test(epoch)
+def start_training(no_of_epoch):
+    for epoch in range(no_of_epoch):
+        train(epoch+1)
+        test(epoch+1)
         scheduler.step()
+
+        
+def define_model_utilities(loss="cross_entropy", optimizer_func="SGD", lr=0.1):
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    best_acc = 0  # best test accuracy
+    classes = ('plane', 'car', 'bird', 'cat', 'deer',
+           'dog', 'frog', 'horse', 'ship', 'truck')
+
+    net = ResNet18()
+    net = net.to(device)
+    if device == 'cuda':
+        net = torch.nn.DataParallel(net)
+     
+    if loss=="cross_entropy":
+        criterion = nn.CrossEntropyLoss()
+    
+    if optimizer_func=="SGD":
+        optimizer = optim.SGD(net.parameters(), lr=lr,
+                      momentum=0.9, weight_decay=5e-4)
+        
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=200)
+    
+    return device, best_acc, classes, net, criterion, optimizer, scheduler
