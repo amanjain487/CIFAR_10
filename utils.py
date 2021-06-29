@@ -54,7 +54,7 @@ def train_transform(train):
 
 
 def load_dataset(tensor_train, numpy_train):
-  train_dataset = CIFAR_10_Dataset(datasets.CIFAR10(root='./data', train=True, download=True,
+  train_dataset = CIFAR_10_Dataset(torchvision.datasets.CIFAR10(root='./data', train=True, download=True,
                                   transform=tensor_train), numpy_train)
 
   testset = torchvision.datasets.CIFAR10(root='./data', train=False,
