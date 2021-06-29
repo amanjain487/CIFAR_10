@@ -33,15 +33,15 @@ def train_transform(train):
   albumentation_train_list = []
   train_list = []
   if "totensor" in train:
-    train_list.append()
+    train_list.append(transforms.ToTensor())
   if "normalize_normal" in train:
-    train_list.append()
+    train_list.append(transforms.Normalize((0.5,0.5,0.5), (0.5,0.5,0.5)))
   if "normalize_mean" in train:
-    train_list.append()
+    train_list.append(transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)))
   if "randomcrop" in train:
-    train_list.append()
+    train_list.append(transforms.RandomCrop(32, padding=4))
   if "horizontal_flip" in train:
-    train_list.append()
+    train_list.append(transforms.RandomHorizontalFlip())
   if "cutout" in train:
     albumentation_train_list.append(A.CoarseDropout(p=0.5, max_holes = 1, max_height=16, max_width=16, min_holes = 1, min_height=16, min_width=16, fill_value=(mean), mask_fill_value = None))
   if "shift_scale_rotate" in train:
