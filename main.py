@@ -12,7 +12,7 @@ import argparse
 
 
 # Training
-def train(epoch, net, criterion, optimizer, device, trainloader):
+def train(epoch, net, criterion, optimizer, device, trainloader, train_loss, train_acc):
     print('\nEpoch: %d' % epoch)
     net.train()
     train_loss = 0
@@ -30,10 +30,13 @@ def train(epoch, net, criterion, optimizer, device, trainloader):
         _, predicted = outputs.max(1)
         total += targets.size(0)
         correct += predicted.eq(targets).sum().item()
-    print('Loss: %.3f | Acc: %.3f%% (%d/%d)' % (train_loss/(batch_idx+1), 100.*correct/total, correct, total))
+    print('Train Loss: %.3f | Train Acc: %.3f%% (%d/%d)' % (train_loss/(batch_idx+1), 100.*correct/total, correct, total))
+    train_loss.append(train_loss/(batch_idx+1))
+    train_acc.append(100.*correct/total)
+    return train_loss, train_acc
 
 
-def test(epoch, net, criterion, device, testloader, best_acc):
+def test(epoch, net, criterion, device, testloader, best_acc, test_loss, test_acc):
     net.eval()
     test_loss = 0
     correct = 0
@@ -49,12 +52,15 @@ def test(epoch, net, criterion, device, testloader, best_acc):
             total += targets.size(0)
             correct += predicted.eq(targets).sum().item()
     print('Loss: %.3f | Acc: %.3f%% (%d/%d)' % (test_loss/(batch_idx+1), 100.*correct/total, correct, total))
-
+    
+    test_loss.append(test_loss/(batch_idx+1))
+    test_acc.append(100.*correct/total)
+    
     # Save checkpoint.
     acc = 100.*correct/total
     if acc > best_acc:
         best_acc = acc
-    return best_acc
+    return best_acc, test_loss, test_acc
     
 
 
@@ -69,11 +75,17 @@ def dataloaders(trainset, testset):
 
 
 def start_training(no_of_epoch, net, criterion, optimizer, device, trainloader, testloader, best_acc):
+    train_loss = []
+    train_acc = []
+    test_loss = []
+    test_acc = []
+    
     for epoch in range(no_of_epoch):
-        train(epoch+1, net, criterion, optimizer, device, trainloader)
-        best_acc = test(epoch+1, net, criterion, device, testloader, best_acc)
+        train_loss, train_acc = train(epoch+1, net, criterion, optimizer, device, trainloader, train_loss, train_acc)
+        best_acc, test_loss, test_acc = test(epoch+1, net, criterion, device, testloader, best_acc, test_loss, test_acc)
         scheduler.step()
     print("Best Acc is : ", best_acc)
+    return train_loss, train_acc, test_loss, test_acc
 
         
 def define_model_utilities(loss="cross_entropy", optimizer_func="SGD", lr=0.1):
