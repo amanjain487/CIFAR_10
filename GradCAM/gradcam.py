@@ -26,7 +26,7 @@ class GradCam(object):
 			def _backward_hook(module, grad_out, grad_in):
 				self.gradients_map[layer_name] = grad_out[0].detach()
 			return _backward_hook
-
+		print(self.model.named_modules())
 		for name, module in self.model.named_modules():
 			if name in self.target_layers:
 				module.register_forward_hook(_wrap_forward_hook(name))
