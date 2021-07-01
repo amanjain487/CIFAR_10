@@ -28,7 +28,7 @@ class GradCam(object):
 			return _backward_hook
 		
 		for name, module in self.model.named_modules():
-			print(name, module)
+			print(name, "-------->", module)
 			if name in self.target_layers:
 				module.register_forward_hook(_wrap_forward_hook(name))
 				module.register_backward_hook(_wrap_backward_hook(name))
