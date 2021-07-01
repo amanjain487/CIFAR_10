@@ -61,6 +61,7 @@ class GradCam(object):
 		output = self.output
 		saliency_maps = {}
 		for target_layer in target_layers:
+			print(self.activations_map)
 			activations = self.activations_map[target_layer]	#[64, 512, 4, 4]
 			grads = self.gradients_map[target_layer]	#[64, 512, 4, 4]
 			weights = F.adaptive_avg_pool2d(grads, 1)	#[64, 512, 1, 1]
