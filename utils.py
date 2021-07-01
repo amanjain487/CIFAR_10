@@ -95,7 +95,7 @@ def denormalize(tensor, mean=[0.4914, 0.4822, 0.4465], std=[0.2023, 0.1994, 0.20
     return ret[0] if single_img else ret
 
   
-def identify_images(net, criterion, device, testloader):
+def identify_images(net, criterion, device, testloader, n):
     net.eval()
     correct_images = []
     incorrect_images = []
@@ -108,7 +108,7 @@ def identify_images(net, criterion, device, testloader):
             
             misclassified_inds = (is_correct==0).nonzero()[:,0]
             for mis_ind in misclassified_inds:
-              if len(incorrect_images) == 25:
+              if len(incorrect_images) == n:
                 break
               incorrect_images.append({
                   "target": targets[mis_ind].cpu().numpy(),
@@ -118,7 +118,7 @@ def identify_images(net, criterion, device, testloader):
 
             correct_inds = (is_correct==1).nonzero()[:,0]
             for ind in correct_inds:
-              if len(correct_images) == 25:
+              if len(correct_images) == n:
                 break
               correct_images.append({
                   "target": targets[ind].cpu().numpy(),
