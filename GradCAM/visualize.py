@@ -36,8 +36,13 @@ class VisualizeCam(object):
 
 		for ax, data in zip(axs.flat, img_data):
 			img = data["img"]
-			npimg = img.cpu().numpy()
-			ax.imshow(np.transpose(npimg, (1, 2, 0)))
+			img = img.cpu().numpy()
+			maxValue = np.amax(img)
+			minValue = np.amin(img)
+			img = np.clip(img, 0, 1)
+			img = img/np.amax(img)
+			img = np.clip(img, 0, 1)
+			ax.imshow(np.transpose(img, (1, 2, 0)))
 			ax.set_title("%s" % (data["label"]))
 
 
