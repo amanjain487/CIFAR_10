@@ -107,24 +107,24 @@ def identify_images(net, criterion, device, testloader):
             is_correct = pred.eq(targets.view_as(predicted))
             
             misclassified_inds = (is_correct==0).nonzero()[:,0]
-              for mis_ind in misclassified_inds:
-                if len(incorrect_images) == 25:
-                  break
-                incorrect_images.append({
-                    "target": target[mis_ind].cpu().numpy(),
-                    "pred": pred[mis_ind][0].cpu().numpy(),
-                    "img": data[mis_ind]
-                })
-              
-              correct_inds = (is_correct==1).nonzero()[:,0]
-              for ind in correct_inds:
-                if len(correct_images) == 25:
-                  break
-                correct_images.append({
-                    "target": target[ind].cpu().numpy(),
-                    "pred": pred[ind][0].cpu().numpy(),
-                    "img": data[ind]
-                })
+            for mis_ind in misclassified_inds:
+              if len(incorrect_images) == 25:
+                break
+              incorrect_images.append({
+                  "target": target[mis_ind].cpu().numpy(),
+                  "pred": pred[mis_ind][0].cpu().numpy(),
+                  "img": data[mis_ind]
+              })
+
+            correct_inds = (is_correct==1).nonzero()[:,0]
+            for ind in correct_inds:
+              if len(correct_images) == 25:
+                break
+              correct_images.append({
+                  "target": target[ind].cpu().numpy(),
+                  "pred": pred[ind][0].cpu().numpy(),
+                  "img": data[ind]
+              })
   return correct_images, incorrect_images
   
   
