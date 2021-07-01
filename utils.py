@@ -104,7 +104,7 @@ def identify_images(net, criterion, device, testloader):
             inputs, targets = inputs.to(device), targets.to(device)
             outputs = net(inputs)           
             _, predicted = outputs.max(1)
-            is_correct = pred.eq(targets.view_as(predicted))
+            is_correct = predicted.eq(targets.view_as(predicted))
             
             misclassified_inds = (is_correct==0).nonzero()[:,0]
             for mis_ind in misclassified_inds:
