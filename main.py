@@ -6,7 +6,7 @@ import torch.backends.cudnn as cudnn
 
 import torchvision
 import torchvision.transforms as transforms
-from Tsai_EVA6_Main.models.resnet import *
+from CIFAT_10.models.resnet import *
 import os
 import argparse
 
