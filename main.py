@@ -96,8 +96,6 @@ def define_model_utilities(loss="cross_entropy", optimizer_func="SGD", lr=0.1):
 
     net = ResNet18()
     net = net.to(device)
-    if device == 'cuda':
-        net = torch.nn.DataParallel(net)
      
     if loss=="cross_entropy":
         criterion = nn.CrossEntropyLoss()
