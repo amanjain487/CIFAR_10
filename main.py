@@ -12,7 +12,7 @@ import argparse
 
 
 # Training
-def train(epoch, net, criterion, optimizer, device, trainloader, train_losses, train_acc, scheduler):
+def train(epoch, net, criterion, optimizer, device, trainloader, train_losses, train_acc):
     print('\nEpoch: %d' % epoch)
     net.train()
     train_loss = 0
@@ -36,7 +36,7 @@ def train(epoch, net, criterion, optimizer, device, trainloader, train_losses, t
     return train_losses, train_acc
 
 
-def test(epoch, net, criterion, device, testloader, best_acc, test_losses, test_acc, scheduler):
+def test(epoch, net, criterion, device, testloader, best_acc, test_losses, test_acc):
     net.eval()
     test_loss = 0
     correct = 0
@@ -81,8 +81,8 @@ def start_training(no_of_epoch, net, criterion, optimizer, device, trainloader, 
     test_acc = []
     
     for epoch in range(no_of_epoch):
-        train_loss, train_acc = train(epoch+1, net, criterion, optimizer, device, trainloader, train_loss, train_acc, scheduler)
-        best_acc, test_loss, test_acc = test(epoch+1, net, criterion, device, testloader, best_acc, test_loss, test_acc, scheduler)
+        train_loss, train_acc = train(epoch+1, net, criterion, optimizer, device, trainloader, train_loss, train_acc)
+        best_acc, test_loss, test_acc = test(epoch+1, net, criterion, device, testloader, best_acc, test_loss, test_acc)
         scheduler.step(test_loss[-1])
     print("Best Acc is : ", best_acc)
     return train_loss, train_acc, test_loss, test_acc
