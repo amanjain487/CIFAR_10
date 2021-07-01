@@ -111,9 +111,9 @@ def identify_images(net, criterion, device, testloader):
               if len(incorrect_images) == 25:
                 break
               incorrect_images.append({
-                  "target": target[mis_ind].cpu().numpy(),
-                  "pred": pred[mis_ind][0].cpu().numpy(),
-                  "img": data[mis_ind]
+                  "target": targets[mis_ind].cpu().numpy(),
+                  "pred": predicted[mis_ind][0].cpu().numpy(),
+                  "img": inputs[mis_ind]
               })
 
             correct_inds = (is_correct==1).nonzero()[:,0]
@@ -121,9 +121,9 @@ def identify_images(net, criterion, device, testloader):
               if len(correct_images) == 25:
                 break
               correct_images.append({
-                  "target": target[ind].cpu().numpy(),
-                  "pred": pred[ind][0].cpu().numpy(),
-                  "img": data[ind]
+                  "target": targets[ind].cpu().numpy(),
+                  "pred": predicted[ind][0].cpu().numpy(),
+                  "img": inputs[ind]
               })
     return correct_images, incorrect_images
   
