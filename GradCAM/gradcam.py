@@ -73,8 +73,7 @@ class GradCam(object):
 			saliency_map = saliency_map.view(self.batch_size, -1)
 			saliency_map -= saliency_map.min(dim=1, keepdim=True)[0]
 			saliency_map /= saliency_map.max(dim=1, keepdim=True)[0]
-			saliency_map = saliency_map.view(self.batch_size, 1,
-											self.img_h, self.img_w)
+			saliency_map = saliency_map.view(self.batch_size, 1, self.img_h, self.img_w)
 			saliency_maps[target_layer] = saliency_map
 
 		return saliency_maps, self.pred
