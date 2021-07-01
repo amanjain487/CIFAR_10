@@ -8,6 +8,7 @@ import numpy as np
 import torchvision
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader, Dataset
+import matplotlib.pyplot as plt
 
 import albumentations as A
 
@@ -66,4 +67,15 @@ def load_dataset(tensor_train, numpy_train):
                                                                                    ]))
   return train_dataset, testset
 
+
+def plot_graph(tr_l, tr_a, te_l, te_a):
+  fig, axs = plt.subplots(2,2,figsize=(15,10))
+  axs[0, 0].plot(tr_l)
+  axs[0, 0].set_title("Training Loss")
+  axs[1, 0].plot(tr_a)
+  axs[1, 0].set_title("Training Accuracy")
+  axs[0, 1].plot(te_l)
+  axs[0, 1].set_title("Test Loss")
+  axs[1, 1].plot(te_a)
+  axs[1, 1].set_title("Test Accuracy")
 
