@@ -125,7 +125,7 @@ def identify_images(net, criterion, device, testloader):
                   "pred": pred[ind][0].cpu().numpy(),
                   "img": data[ind]
               })
-  return correct_images, incorrect_images
+    return correct_images, incorrect_images
   
   
 def plot_images(img_data, classes):
