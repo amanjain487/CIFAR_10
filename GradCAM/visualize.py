@@ -49,7 +49,7 @@ class VisualizeCam(object):
 
 	def __call__(self, images, target_layers, target_inds=None, metric=""):
 		masks_map, pred = self.gcam(images, target_layers, target_inds)
-		for i in range(min(len(images),5)):
+		for i in range(min(len(images))):
 			img = images[i]
 			results_data = [{
 				"img": denormalize(img),
