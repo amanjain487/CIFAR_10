@@ -66,10 +66,10 @@ def test(epoch, net, criterion, device, testloader, best_acc, test_losses, test_
 
 def dataloaders(trainset, testset):
     trainloader = torch.utils.data.DataLoader(
-    trainset, batch_size=128, shuffle=True, num_workers=2)
+    trainset, batch_size=128, shuffle=True, num_workers=4)
 
     testloader = torch.utils.data.DataLoader(
-    testset, batch_size=100, shuffle=False, num_workers=2)
+    testset, batch_size=100, shuffle=False, num_workers=4)
     
     return trainloader, testloader
 
