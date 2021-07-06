@@ -34,26 +34,27 @@ class CIFAR_10_Dataset(torch.utils.data.Dataset):
 def train_transform(train):
   albumentation_train_list = []
   train_list = []
-  if "totensor" in train:
-    train_list.append(transforms.ToTensor())
-  if "normalize_normal" in train:
-    train_list.append(transforms.Normalize((0.5,0.5,0.5), (0.5,0.5,0.5)))
-  if "normalize_mean" in train:
-    train_list.append(transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)))
-  if "randomcrop" in train:
-    train_list.append(transforms.RandomCrop(32, padding=4))
-  if "horizontal_flip" in train:
-    train_list.append(transforms.RandomHorizontalFlip())
-  if "random_rotate" in train:
-    train_list.append(transforms.RandomRotation((-5.0, 5.0), fill=(0,0,0)))
-  if "cutout" in train:
-    albumentation_train_list.append(A.CoarseDropout(p=0.5, max_holes = 1, max_height=16, max_width=16, min_holes = 1, min_height=16, min_width=16, fill_value=(0.4914, 0.4822, 0.4465), mask_fill_value = None))
-  if "shift_scale_rotate" in train:
-     albumentation_train_list.append(A.ShiftScaleRotate(shift_limit=0.05, scale_limit=0.05, rotate_limit=15, p=0.5))
-  if "grayscale" in train:
-     albumentation_train_list.append(A.ToGray(p=0.5))
+  for i in train:
+    if i == "totensor":
+      train_list.append(transforms.ToTensor())
+    if i == "normalize_normal":
+      train_list.append(transforms.Normalize((0.5,0.5,0.5), (0.5,0.5,0.5)))
+    if i == "normalize_mean":
+      train_list.append(transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)))
+    if i == "randomcrop":
+      train_list.append(transforms.RandomCrop(32, padding=4))
+    if i == "horizontal_flip" or i == "flipLR":
+      train_list.append(transforms.RandomHorizontalFlip())
+    if i == "random_rotate":
+      train_list.append(transforms.RandomRotation((-5.0, 5.0), fill=(0,0,0)))
+    if i == "cutout":
+      albumentation_train_list.append(A.CoarseDropout(p=0.5, max_holes = 1, max_height=8, max_width=8, min_holes = 1, min_height=8, min_width=8, fill_value=(0.4914, 0.4822, 0.4465), mask_fill_value = None))
+    if i == "shift_scale_rotate":
+       albumentation_train_list.append(A.ShiftScaleRotate(shift_limit=0.05, scale_limit=0.05, rotate_limit=15, p=0.5))
+    if i == "grayscale":
+       albumentation_train_list.append(A.ToGray(p=0.5))
   
-  return transforms.Compose(train_list), A.Compose(albumentation_train_list)
+  return transforms.Sequential(train_list), A.Sequential(albumentation_train_list)
 
 
 
