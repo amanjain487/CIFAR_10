@@ -101,7 +101,7 @@ def define_model_utilities(model, momentum, weight_decay, scheduler, loss="cross
     
     if optimizer_func=="SGD":
         optimizer = optim.SGD(net.parameters(), lr=lr,
-                      momentum=momentum, weight_decay=weight_decay)
+                      momentum=momentum, weight_decay=weight_decay, nesterov=True)
 
     if scheduler is not None:
         scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, patience=3)
