@@ -38,7 +38,6 @@ class BasicBlock(nn.Module):
         out1 = F.relu(self.bn1(self.maxpool1(self.conv1(x))))
         out = F.relu(self.bn2(self.conv2(out1)))
         out = self.shortcut(out)
-        # F.relu(self.bn2(self.conv2(out)))
         out += out1
         out = F.relu(out)
         return out
@@ -81,7 +80,9 @@ class ResNetCustom(nn.Module):
         self.layer3 = self._make_layer(block, 512, num_blocks[2], stride=1)
 
         self.max_pool2 = nn.MaxPool2d(4)
+        self.softmax = torch.nn.Softmax(dim=1)
         self.linear = nn.Linear(512*block.expansion, num_classes)
+
 
     def _make_layer(self, block, planes, num_blocks, stride):
         strides = [stride] + [1]*(num_blocks-1)
@@ -107,6 +108,7 @@ class ResNetCustom(nn.Module):
         out = self.max_pool2(r2)
         out = out.view(out.size(0), -1)
         out = self.linear(out)
+        out = self.softmax(out)
         return out
 
 

@@ -54,7 +54,7 @@ def train_transform(train):
     if i == "grayscale":
        albumentation_train_list.append(A.ToGray(p=0.5))
   
-  return transforms.Sequential(train_list), A.Sequential(albumentation_train_list)
+  return transforms.Compose(train_list), A.Sequential(albumentation_train_list)
 
 
 

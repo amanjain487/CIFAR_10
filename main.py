@@ -6,7 +6,6 @@ import torch.backends.cudnn as cudnn
 
 import torchvision
 import torchvision.transforms as transforms
-from CIFAR_10.models.resnet import *
 import os
 import argparse
 
@@ -88,13 +87,13 @@ def start_training(no_of_epoch, net, criterion, optimizer, device, trainloader, 
     return train_loss, train_acc, test_loss, test_acc
 
         
-def define_model_utilities(loss="cross_entropy", optimizer_func="SGD", lr=0.1):
+def define_model_utilities(model, loss="cross_entropy", optimizer_func="SGD", lr=0.1):
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     best_acc = 0  # best test accuracy
     classes = ('plane', 'car', 'bird', 'cat', 'deer',
            'dog', 'frog', 'horse', 'ship', 'truck')
 
-    net = ResNet18()
+    net = model
     net = net.to(device)
      
     if loss=="cross_entropy":
