@@ -87,7 +87,7 @@ def start_training(no_of_epoch, net, criterion, optimizer, device, trainloader, 
     return train_loss, train_acc, test_loss, test_acc
 
         
-def define_model_utilities(model, loss="cross_entropy", optimizer_func="SGD", lr=0.1):
+def define_model_utilities(model, momentum, weight_decay, scheduler, loss="cross_entropy", optimizer_func="SGD", lr=0.1):
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     best_acc = 0  # best test accuracy
     classes = ('plane', 'car', 'bird', 'cat', 'deer',
@@ -101,8 +101,9 @@ def define_model_utilities(model, loss="cross_entropy", optimizer_func="SGD", lr
     
     if optimizer_func=="SGD":
         optimizer = optim.SGD(net.parameters(), lr=lr,
-                      momentum=0.9, weight_decay=5e-4)
-        
-    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, patience=3)
+                      momentum=momentum, weight_decay=weight_decay)
+
+    if scheduler is not None:
+        scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, patience=3)
     
     return device, best_acc, classes, net, criterion, optimizer, scheduler
