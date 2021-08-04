@@ -11,7 +11,7 @@ import argparse
 
 
 # Training
-def train(epoch, net, criterion, optimizer, device, trainloader, train_losses, train_acc):
+def train(epoch, net, criterion, optimizer, device, trainloader, train_losses, train_acc, to_print):
     print('\nEpoch: %d' % epoch)
     net.train()
     train_loss = 0
@@ -29,13 +29,14 @@ def train(epoch, net, criterion, optimizer, device, trainloader, train_losses, t
         _, predicted = outputs.max(1)
         total += targets.size(0)
         correct += predicted.eq(targets).sum().item()
-    print('Train Loss: %.3f | Train Acc: %.3f%% (%d/%d)' % (train_loss/(batch_idx+1), 100.*correct/total, correct, total))
-    train_losses.append(train_loss/(batch_idx+1))
-    train_acc.append(100.*correct/total)
+    if to_print:
+        print('Train Loss: %.3f | Train Acc: %.3f%% (%d/%d)' % (train_loss/(batch_idx+1), 100.*correct/total, correct, total))
+        train_losses.append(train_loss/(batch_idx+1))
+        train_acc.append(100.*correct/total)
     return train_losses, train_acc
 
 
-def test(epoch, net, criterion, device, testloader, best_acc, test_losses, test_acc):
+def test(epoch, net, criterion, device, testloader, best_acc, test_losses, test_acc, to_print):
     net.eval()
     test_loss = 0
     correct = 0
@@ -50,15 +51,17 @@ def test(epoch, net, criterion, device, testloader, best_acc, test_losses, test_
             _, predicted = outputs.max(1)
             total += targets.size(0)
             correct += predicted.eq(targets).sum().item()
-    print('Test Loss: %.3f | Test Acc: %.3f%% (%d/%d)' % (test_loss/(batch_idx+1), 100.*correct/total, correct, total))
     
-    test_losses.append(test_loss/(batch_idx+1))
-    test_acc.append(100.*correct/total)
+    if to_print:
+        print('Test Loss: %.3f | Test Acc: %.3f%% (%d/%d)' % (test_loss/(batch_idx+1), 100.*correct/total, correct, total))
+    
+        test_losses.append(test_loss/(batch_idx+1))
+        test_acc.append(100.*correct/total)
     
     # Save checkpoint.
-    acc = 100.*correct/total
-    if acc > best_acc:
-        best_acc = acc
+        acc = 100.*correct/total
+        if acc > best_acc:
+            best_acc = acc
     return best_acc, test_losses, test_acc
     
 
@@ -80,10 +83,11 @@ def start_training(no_of_epoch, net, criterion, optimizer, device, trainloader, 
     test_acc = []
     
     for epoch in range(no_of_epoch):
-        train_loss, train_acc = train(epoch+1, net, criterion, optimizer, device, trainloader, train_loss, train_acc)
-        best_acc, test_loss, test_acc = test(epoch+1, net, criterion, device, testloader, best_acc, test_loss, test_acc)
-        if isinstance(scheduler, torch.optim.lr_scheduler.ReduceLROnPlateau):
-                scheduler.step(test_loss[-1])
+        train_loss, train_acc = train(epoch+1, net, criterion, optimizer, device, trainloader, train_loss, train_acc, False)
+        best_acc, test_loss, test_acc = test(epoch+1, net, criterion, device, testloader, best_acc, test_loss, test_acc, False)
+        train_loss, train_acc = train(epoch+1, net, criterion, optimizer, device, trainloader, train_loss, train_acc, True)
+        best_acc, test_loss, test_acc = test(epoch+1, net, criterion, device, testloader, best_acc, test_loss, test_acc, True)
+        
     print("Best Acc is : ", best_acc)
     return train_loss, train_acc, test_loss, test_acc
 
