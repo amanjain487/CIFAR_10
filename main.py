@@ -12,7 +12,8 @@ import argparse
 
 # Training
 def train(epoch, net, criterion, optimizer, device, trainloader, train_losses, train_acc, to_print):
-    print('\nEpoch: %d' % epoch)
+    if to_print:
+        print('\nEpoch: %d' % epoch)
     net.train()
     train_loss = 0
     correct = 0
